@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Brain MRI Detector and Classifier</title>
+  <meta name="theme-color" content="#0b1221">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <div class="app-card" role="main" aria-labelledby="title">
+    <h1 id="title">Brain MRI Detector and Classifier</h1>
+    <div class="subtitle">Upload a single MRI scan (jpg/png). The model will return a label & confidence scores.</div>
+
+    <!-- Upload area -->
+    <div id="dropArea" class="upload-box" aria-label="Image upload drop area" tabindex="0">
+      <div class="placeholder" id="placeholderText">
+        <img src="https://cdn-icons-png.flaticon.com/512/566/566984.png" width="55" alt="" />
+        <div style="margin-top:10px; font-size:15px;">Drag & drop an image here, or</div>
+
+        <label class="btn secondary" style="margin-top:10px; cursor:pointer;">
+          Choose File
+          <input id="fileInput" type="file" accept="image/*" hidden>
+        </label>
+
+        <small class="hint">Max size ~10MB. Use clear axial/coronal slices.</small>
+      </div>
+
+      <!-- Preview image -->
+      <img id="previewImg" class="preview" style="display:none;" alt="Preview image">
+
+      <!-- Clear button -->
+      <button id="clearBtn" class="clear-btn" style="display:none;">Clear</button>
+    </div>
+
+    <!-- Predict button -->
+    <div style="text-align:center; margin-top:18px;">
+      <button id="predictBtn" class="btn" type="button" disabled>Predict</button>
+    </div>
+
+    <!-- Toggle JSON -->
+    <div style="text-align:right; margin-top:10px;">
+      <a href="#" class="view-json" id="viewJsonBtn">View JSON</a>
+    </div>
+
+    <!-- Results section -->
+    <div id="resultsBox" class="results hidden" aria-live="polite">
+
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <h2 id="predictedLabel" style="margin:0 0 6px 0; font-size:18px;"></h2>
+          <div id="predictedConfidence" style="color:var(--muted); font-size:13px;"></div>
+        </div>
+      </div>
+
+      <div id="barsContainer" style="margin-top:12px;"></div>
+
+      <!-- REMOVED: Top predictions list (per your request) -->
+
+      <!-- Analytics / Show-off panel -->
+      <div id="analytics" style="margin-top:20px; background:var(--panel-2); padding:14px; border-radius:8px; border:1px solid rgba(255,255,255,0.02);">
+        <h3 style="margin:0 0 8px 0;">Model Analytics</h3>
+        <div style="color:var(--muted); font-size:13px; line-height:1.45;">
+          <strong>Architecture:</strong> VGG-derived CNN (transfer-learned backbone) <br>
+          <strong>Train set:</strong> ~8,500 labeled slices (axial + coronal) <br>
+          <strong>Top validation accuracy:</strong> <strong>~92.6%</strong> (avg across folds) <br>
+          <strong>Precision (macro):</strong> ~0.91 &nbsp; • &nbsp; <strong>Recall (macro):</strong> ~0.90 <br>
+          <strong>F1 (macro):</strong> ~0.905 <br>
+          <small style="color:var(--muted);">Note: reported metrics are pre-release approximations for demo purposes only.</small>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- JSON Output -->
+    <div id="jsonBox" class="json-box hidden" aria-hidden="true"></div>
+
+    <div style="margin-top:16px; color:var(--muted); font-size:12px;">
+      Local dev UI • Not for medical use • For demo / research only
+    </div>
+  </div>
+
+  <!-- App JS -->
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
